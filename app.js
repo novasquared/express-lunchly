@@ -10,8 +10,8 @@ const { NotFoundError } = require("./expressError");
 
 const app = new Express();
 
-// Parse body for urlencoded (non-JSON) data
-app.use(bodyParser.urlencoded({ extended: false }));
+// // Parse body for urlencoded (non-JSON) data
+// app.use(bodyParser.urlencoded({ extended: false }));
 
 // // process JSON body => req.body
 app.use(Express.json());

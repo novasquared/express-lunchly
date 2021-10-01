@@ -12,21 +12,35 @@ const router = new express.Router();
 /** Homepage: show list of customers. */
 
 router.get("/", async function (req, res, next) {
+  debugger;
   const customers = await Customer.all();
   console.log("in solution routes file");
-  console.log(customers);
+  // console.log(customers);
   return res.render("customer_list.html", { customers });
 });
 
-/** Searched List of Cutstomers: 
+/** Searched List of Customers: 
  * show list of customers that meet the search criteria. */
 
 router.get("/search", async function (req, res, next) {
-  debugger;
   const searchTerm = req.query.searchTerm;
-  const customers = await Customer.all(searchTerm);//FIXME: Change once the model is done
-  // console.log("in solution routes file");
-  console.log(customers);
+  const customers = await Customer.search(searchTerm);
+
+  console.log("in solution routes file");
+  // console.log(customers);
+
+  return res.render("customer_list.html", { customers });
+});
+
+/** List of Top Ten Customers by number of reservations descending: */
+
+router.get("/topTen", async function (req, res, next) {
+  // const searchTerm = req.query.searchTerm;
+  const customers = await Customer.topTen();
+
+  console.log("in solution routes file");
+  // console.log(customers);
+
   return res.render("customer_list.html", { customers });
 });
 
