@@ -13,6 +13,12 @@ const app = new Express();
 // Parse body for urlencoded (non-JSON) data
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// // process JSON body => req.body
+app.use(Express.json());
+
+// process traditional form data => req.body
+app.use(Express.urlencoded({ extended: true }));
+
 nunjucks.configure("templates", {
   autoescape: true,
   express: app,
