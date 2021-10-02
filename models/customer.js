@@ -34,8 +34,10 @@ class Customer {
   /** find customers that match search term. */
 
   static async search(searchTerm) {
-    const results = await db.query(
-      `SELECT id,
+    const fullName = searchTerm.split(" ");
+    if (fullName.length === 1) {
+      const results = await db.query(
+        `SELECT id,
             first_name AS "firstName",
             last_name  AS "lastName",
             phone,
@@ -44,8 +46,24 @@ class Customer {
           WHERE first_name ILIKE $1 
           OR last_name ILIKE $1
           ORDER BY last_name, first_name`,
-      [`${searchTerm}%`],
-    );
+        [`${searchTerm}%`],
+      );
+    } else {
+      const firstName = fullName[0];
+      const lastName = fullName[1];
+      const results = await db.query(
+        `SELECT id,
+            first_name AS "firstName",
+            last_name  AS "lastName",
+            phone,
+            notes
+          FROM customers
+          WHERE first_name ILIKE $1 
+          AND last_name ILIKE $2
+          ORDER BY last_name, first_name`,
+        [`${firstName}%`,`${lastName}%`],
+      );
+    }
     return results.rows.map(c => new Customer(c));
   }
 
